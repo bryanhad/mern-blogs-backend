@@ -40,4 +40,4 @@ noteSchema.plugin(AutoIncrement, {
     start_seq: 500
 })
 
-export const User = mongoose.model<INote>('User', noteSchema)
+export const Note = mongoose.model<INote>('Note', noteSchema)

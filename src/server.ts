@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import path from 'path'
-import {rootRouter} from './routes/root.js'
 import { fileURLToPath } from 'url'
 import cors from 'cors'
 import { logEvents, logger } from './middleware/logger.js'
@@ -9,7 +8,9 @@ import cookieParser from 'cookie-parser'
 import { errorHandler } from './middleware/errorHandler.js'
 import { corsOptions } from './config/corsOptions.js'
 import { connectDB } from './config/dbConnect.js'
-import mongoose, {MongooseError} from 'mongoose'
+import mongoose from 'mongoose'
+import {rootRoute} from './routes/root.js'
+import {userRoutes} from './routes/userRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -28,7 +29,8 @@ app.use(cookieParser())
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 // routes
-app.use('/', rootRouter)
+app.use('/', rootRoute)
+app.use('/users', userRoutes)
 
 // catch all
 app.all("*", (req, res) => {
