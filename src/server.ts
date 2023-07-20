@@ -4,16 +4,20 @@ import path from 'path'
 import {rootRouter} from './routes/root.js'
 import { fileURLToPath } from 'url'
 import cors from 'cors'
-import { logger } from './middleware/logger.js'
+import { logEvents, logger } from './middleware/logger.js'
 import cookieParser from 'cookie-parser'
 import { errorHandler } from './middleware/errorHandler.js'
 import { corsOptions } from './config/corsOptions.js'
+import { connectDB } from './config/dbConnect.js'
+import mongoose, {MongooseError} from 'mongoose'
 
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3500
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+connectDB()
 
 // third party middlewares
 app.use(logger)
@@ -42,4 +46,12 @@ app.all("*", (req, res) => {
 app.use(errorHandler)
 
 // listener
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB')
+    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+})
+
+mongoose.connection.on('error', (err) => {
+    console.log(err)
+    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
+})
