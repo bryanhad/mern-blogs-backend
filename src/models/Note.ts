@@ -1,8 +1,7 @@
 //@ts-nocheck
 import mongoose, { ObjectId } from 'mongoose'
-import Inc from 'mongoose-sequence'
-
-const AutoIncrement = Inc(mongoose)
+// import Inc from 'mongoose-sequence'
+// const AutoIncrement = Inc(mongoose)
 
 interface INote {
    user: ObjectId
@@ -34,10 +33,10 @@ const noteSchema = new mongoose.Schema<INote>(
    { timestamps: true }
 )
 
-noteSchema.plugin(AutoIncrement, {
-    inc_field: 'ticket',
-    id: 'ticketNums',
-    start_seq: 500
-})
+// noteSchema.plugin(AutoIncrement, {
+//     inc_field: 'ticket',
+//     id: 'ticketNums',
+//     start_seq: 500
+// })
 
-export const Note = mongoose.model<INote>('Note', noteSchema)
+export default mongoose.model<INote>('Note', noteSchema)

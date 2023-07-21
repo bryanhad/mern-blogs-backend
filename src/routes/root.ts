@@ -10,4 +10,4 @@ rootRoute.get('^/$|/index(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'index.html'))
 })
 
-export {rootRoute}
+export default rootRoute

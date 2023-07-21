@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     roles: [{
         type: String,
-        default: 'Employee'
+        required: true
     }],
     active: {
         type: Boolean,
@@ -26,4 +26,4 @@ const userSchema = new mongoose.Schema<IUser>({
     }
 })
 
-export const User = mongoose.model<IUser>('User', userSchema)
+export default mongoose.model<IUser>('User', userSchema)

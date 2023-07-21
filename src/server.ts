@@ -5,12 +5,13 @@ import { fileURLToPath } from 'url'
 import cors from 'cors'
 import { logEvents, logger } from './middleware/logger.js'
 import cookieParser from 'cookie-parser'
-import { errorHandler } from './middleware/errorHandler.js'
-import { corsOptions } from './config/corsOptions.js'
-import { connectDB } from './config/dbConnect.js'
+import errorHandler from './middleware/errorHandler.js'
+import corsOptions from './config/corsOptions.js'
+import connectDB from './config/connectDB.js'
 import mongoose from 'mongoose'
-import {rootRoute} from './routes/root.js'
-import {userRoutes} from './routes/userRoutes.js'
+import rootRoute from './routes/root.js'
+import usersRoutes from './routes/usersRoutes.js'
+import notesRoutes from './routes/notesRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -30,9 +31,10 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 // routes
 app.use('/', rootRoute)
-app.use('/users', userRoutes)
+app.use('/users', usersRoutes)
+app.use('/notes', notesRoutes)
 
-// catch all
+// catch all route
 app.all("*", (req, res) => {
     res.status(404)
     if (req.accepts('html')) {

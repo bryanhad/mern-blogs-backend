@@ -12,4 +12,4 @@ const errorHandler: ErrorRequestHandler = (err:Error, req, res, next) => {
     res.json({message: err.message})
 }
 
-export {errorHandler}
+export default errorHandler
